@@ -1,0 +1,110 @@
+1.The difference between use and get/post is that use handle any incoming http method.
+
+app.use → It is generally used for introducing middlewares in your application and can handle all type of HTTP requests.
+app.get → It is only for handling GET HTTP requests.
+
+The data that posted to the server, this data inherent to our node server as it is running, and 
+it shared across all users. But sharing this data across requests across users is typically not something
+you want to do. Maybe this data is personal and you dont want to share it across all users - chrome and firefox
+
+Section 6 - Rendering the Shop template :
+We are Rendering the shop template, but we are not render any dynamic content => and that is the all idea
+of this module => Rendering dynamic content!
+
+We got our adminData with the products so lets actually take this products and now pass it into our
+template => inject it into our template, so we can use it in our template file and somehow output it there.
+
+To that we can pass a second argument to the render method => the render method alows us to pass data that
+should be added into our view.
+
+res.render('shop',) - we pass products as a js object where we map it to a key name where we then can use it
+in the template to refer to the data we are passing in.
+
+This returns from the export the routes object, and in every object we have routes registered.
+ * 
+ * And also this router are middleware functions --> Because it's express object, it's valid middleware function
+ * 
+ */
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+/**
+ * expressObject.use - use allows us to add a new middleware function, the use method is 
+ * flexible, it excepts array of request handlers.
+ * One way of using the use function is:
+ * app.use( () => {} ) - simply passing a function to the use function, this function will be executed for every
+ * incoming request. 
+ * 
+ * Also the the function passed to use method will get response and request object, and also next argument -->
+ * app.use( (req,res,next) => {} )
+ * next - is a function that passed to the arrow function of use, the next function must be executed to allow
+ * to the request to travel to the next middleware
+ * 
+ * The request go through the file from top to bottom and if we dont call next, the request wont move to the
+ * next middleware
+ * 
+ * If you send a response, like in vanilla javascript you dont want to move to other middlewares after
+ * sending a response
+
+
+/**
+ * This is a normal route => not a dynamic segment => The order will matter => if we order it like this
+ * keep in mind that your code is parsed from top to bottom, the request goes through that from top to 
+ * bottom 
+ * 
+ * Long story short => if we order it like this we will never reach that route router.get('/products/delete');
+ * because if we have a route like this, express.js will already fire at this route, or will already handle
+ * it in this route => router.get('/products/:productId');
+ * 
+ * because delete will be treated has the dynamic segment.
+ * 
+ * Conclusion : if we have dynamic route and specific route we will need to put the more specific route
+ * above the dynamic route.
+
+ In JavaScript, a callback is a function passed into another function as an argument to be executed later.
+
+
+
+In some point the queries we make like we did in the shop controller:
+getProduct,getProducts 
+Those queries are reletively not complex. The problem is that queries will become more and more
+complex the more complex our application logic becomes, at some point we will have to connect 
+tables => one thing we dont use right now is relations! because we've got only one table.
+
+There is an easier approach, which allows us not to write all this queries, we dont need to
+write any sql code, but instead only work with native javascript objects, that give us certain
+functionalities we need for:
+connecting them,deleting them,adding them and so on =>{
+
+    for this we will use another 3rd party package that we will add to this
+    application! That will make our lives a lot easier! 
+
+    Sequelize => a 3rd party package that will allow us work with javascript objects
+    and convenient methods to:
+    create new elements in a database
+    to edit them,delete them, find them and connect them with relations.
+}
+
+Sequelize:
+Sequelize uses mysql behind the scenes, therefore Sequelize behind the scenes will do
+something like this:
+
+/**
+ * import the mysql package and store in the mysql variable
+ */
+const mysql = require('mysql2');
+
+/**
+ * and now there are two ways of connecting the mysql database
+ */
+const pool = mysql.createPool({
+    host:'localhost',
+    user:'root',
+    database:'node-complete',
+    password:'wevawewweva767'
+});
+
+module.exports = pool.promise();
+
+but we will not write this
+
