@@ -108,3 +108,4 @@ module.exports = pool.promise();
 
 but we will not write this
 
+Just adding notes for the git exercise

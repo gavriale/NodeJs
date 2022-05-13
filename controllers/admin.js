@@ -28,6 +28,7 @@ exports.postAddProduct = (req,res,next) => {
      */
     
     console.log(req.user);
+    console.log('git exercise comment');
     req.user.createProduct({
       title: title,
       price: price,
